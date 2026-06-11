@@ -89,7 +89,7 @@ try:
                 print("[WARN] Dropped stale packet")
                 continue
 
-            pwm = mix_thrusters(surge, sway, heaven, yaw)
+            pwm = mix_thrusters(surge, sway, heave, yaw)
 
             send_pwm(pwm)
 
