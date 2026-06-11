@@ -21,17 +21,17 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_IP, UDP_PORT))
 sock.settimeout(UDP_TIMEOUT)
 
-# ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)
+# ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)              #---------------------------------
 
 last_rx_time = time.time()
 
 print(f"[INFO] UDP listening on port {UDP_PORT}")
-# print(f"[INFO] Serial connected: {SERIAL_PORT} @ {BAUD}")
+# print(f"[INFO] Serial connected: {SERIAL_PORT} @ {BAUD}")      #---------------------------------
 
 def clamp(val):
     return max(PWM_MIN, min(PWM_MAX, val))
 
-def mix_thrusters(surge, sway, yaw, heave):
+def mix_thrusters(surge, sway, heave, yaw):
     """
     8-thruster mixing:
     T1-T4: horizontal vectored at 45°
@@ -52,7 +52,7 @@ def mix_thrusters(surge, sway, yaw, heave):
 
 def send_pwm(pwm):
     out = "<" + ",".join(str(x) for x in pwm) + ">"
-    # ser.write(out.encode())
+    # ser.write(out.encode())                                     #---------------------------------
     print("[PWM]", out)
 
 def send_neutral():
@@ -78,8 +78,8 @@ try:
                 timestamp = int(parts[0])
                 surge = float(parts[1])
                 sway  = float(parts[2])
-                yaw   = float(parts[3])
-                heave = float(parts[4])
+                heave   = float(parts[3])
+                yaw = float(parts[4])
             except ValueError:
                 continue
 
@@ -108,5 +108,5 @@ except KeyboardInterrupt:
 
 finally:
     sock.close()
-    # ser.close()
+    # ser.close()                                            #---------------------------------
     print("[INFO] Socket and serial closed.")
