@@ -23,8 +23,8 @@ const int ESC_PINS[8] = {13, 12, 14, 27, 26, 25, 33, 32};
 */
 
 // --- PWM limits ---
-const int PWM_MIN     = 1000;
-const int PWM_MAX     = 2000;
+const int PWM_MIN     = 1100;
+const int PWM_MAX     = 1900;
 const int PWM_NEUTRAL = 1500;
 
 // --- Failsafe ---
@@ -34,7 +34,6 @@ bool failsafeActive             = false;
 
 Servo escs[8];
 
-// ---------------------------------------------------------------
 void setup() {
   Serial.begin(115200);
 
@@ -55,7 +54,6 @@ void setup() {
   delay(3000);  // give ESCs time to arm at neutral
 }
 
-// ---------------------------------------------------------------
 int clamp(int val) {
   return max(PWM_MIN, min(PWM_MAX, val));
 }
@@ -73,7 +71,6 @@ void applyPWM(int pwm[8]) {
   }
 }
 
-// ---------------------------------------------------------------
 // Parse "<1500,1500,1500,1500,1500,1500,1500,1500>"
 bool parsePacket(String msg, int pwm[8]) {
   msg.trim();
@@ -97,7 +94,6 @@ bool parsePacket(String msg, int pwm[8]) {
   return (idx == 8);
 }
 
-// ---------------------------------------------------------------
 void loop() {
   // --- Failsafe check ---
   if (millis() - lastPacketTime > FAILSAFE_MS) {
