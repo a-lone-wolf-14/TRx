@@ -7,7 +7,7 @@
 #include <ESP32Servo.h>
 
 // --- Pin assignments (change to match your wiring) ---
-// T1–T4: Horizontal (FL, FR, BL, BL)
+// T1–T4: Horizontal (FL, FR, BL, BR)
 // T5–T8: Vertical Heave (HFL, HFR, HBL, HBR)
 const int ESC_PINS[8] = {13, 12, 14, 27, 26, 25, 33, 32};
 
@@ -71,7 +71,7 @@ void applyPWM(int pwm[8]) {
   }
 }
 
-// Parse "<1500,1500,1500,1500,1500,1500,1500,1500>"
+// Parse "<1500,1500,1500,1500,1500,1500,1500,1500>" == "<FL,FR,BL,BR,HFL,HFR,HBL,HBR>"
 bool parsePacket(String msg, int pwm[8]) {
   msg.trim();
   if (!msg.startsWith("<") || !msg.endsWith(">")) return false;
