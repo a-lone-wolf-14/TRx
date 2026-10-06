@@ -6,6 +6,7 @@ UDP_IP = "127.0.0.1"
 UDP_PORT = 5005                     # must match sender
 SERIAL_PORT = "/dev/ttyACM0"         # change as needed, use "ls /dev/tty*" command to see the external MCU port, you have to find it out, not specified there
 BAUD = 115200
+USE_SERIAL = True                     # set to False to disable serial output
 
 PWM_MIN = 1250
 PWM_MAX = 1850
@@ -21,12 +22,14 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((UDP_IP, UDP_PORT))
 sock.settimeout(UDP_TIMEOUT)
 
-# ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)              #---------------------------------
+if USE_SERIAL:
+    ser = serial.Serial(SERIAL_PORT, BAUD, timeout=1)              #---------------------------------
 
 last_rx_time = time.time()
 
 print(f"[INFO] UDP listening on port {UDP_PORT}")
-# print(f"[INFO] Serial connected: {SERIAL_PORT} @ {BAUD}")      #---------------------------------
+if USE_SERIAL:
+    print(f"[INFO] Serial connected: {SERIAL_PORT} @ {BAUD}")      #---------------------------------
 
 def clamp(val):
     return max(PWM_MIN, min(PWM_MAX, val))
@@ -40,19 +43,20 @@ def mix_thrusters(surge, sway, heave, yaw):
 
     pwm = [PWM_NEUTRAL] * 8
 
-    pwm[0] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge - sway - yaw)))  # FR
-    pwm[1] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge + sway - yaw)))  # BR
+    pwm[0] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge - sway - yaw)))  # FL
+    pwm[1] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge + sway - yaw)))  # FR
     pwm[2] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge - sway + yaw)))  # BL
-    pwm[3] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge + sway + yaw)))  # FL
+    pwm[3] = clamp(round(PWM_NEUTRAL + MIX_GAIN * (surge + sway + yaw)))  # BR
 
     for i in range(4, 8):
-        pwm[i] = clamp(round(PWM_NEUTRAL + heave))
+        pwm[i] = clamp(round(PWM_NEUTRAL + heave)) #H(FL,FR,BL,BR)
 
     return pwm
 
 def send_pwm(pwm):
-    out = "<" + ",".join(str(x) for x in pwm) + ">"
-    # ser.write(out.encode())                                     #---------------------------------
+    out = "<" + ",".join(str(x) for x in pwm) + ">\n"
+    if USE_SERIAL:
+        ser.write(out.encode())                                     #---------------------------------
     print("[PWM]", out)
 
 def send_neutral():
@@ -108,5 +112,6 @@ except KeyboardInterrupt:
 
 finally:
     sock.close()
-    # ser.close()                                            #---------------------------------
+    if USE_SERIAL:
+        ser.close()                                            #---------------------------------
     print("[INFO] Socket and serial closed.")

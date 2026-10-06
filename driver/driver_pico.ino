@@ -1,13 +1,10 @@
-
 // Raspberry Pi Pico – 8-Thruster PWM Controller
 // Receives: "<pwm0,pwm1,pwm2,pwm3,pwm4,pwm5,pwm6,pwm7>\n"
-// Outputs:  Standard ESC PWM (1000–2000us) on pins below
-
+// Outputs:  Standard ESC PWM (1100–1900us) on pins below    
 
 // --- Pin assignments ---
 // T1–T4: Horizontal
 // T5–T8: Vertical Heave
-
 const int ESC_PINS[8] = {13, 12, 14, 27, 26, 25, 33, 32};
 
 /*
@@ -36,8 +33,6 @@ const unsigned long FAILSAFE_MS = 500;
 unsigned long lastPacketTime = 0;
 bool failsafeActive = false;
 
-
-
 // Convert microseconds to Pico PWM duty cycle
 
 //
@@ -46,12 +41,11 @@ bool failsafeActive = false;
 // Period = 20,000 us
 //
 // Example:
-// 1000 us -> 5%
+// 1100 us -> 5.5%
 // 1500 us -> 7.5%
-// 2000 us -> 10%
+// 1900 us -> 9.5%
 //
 // Pico PWM uses a 16-bit duty value (0–65535).
-
 
 uint16_t microsecondsToDuty(int microseconds)
 {
@@ -106,11 +100,9 @@ void applyPWM(int pwm[8])
     }
 }
 
-
 // Parse packet:
 //
 // <1500,1500,1500,1500,1500,1500,1500,1500>
-
 
 bool parsePacket(String msg, int pwm[8])
 {
@@ -210,8 +202,6 @@ void setup()
     // Give ESCs time to arm at neutral
     delay(3000);
 }
-
-
 
 // Main loop
 void loop()

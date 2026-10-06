@@ -1,7 +1,7 @@
 // ================================================================
 // ESP32 – 8-Thruster PWM Controller
 // Receives: "<pwm0,pwm1,pwm2,pwm3,pwm4,pwm5,pwm6,pwm7>\n" over Serial
-// Outputs:  Standard ESC PWM (1000–2000µs) on pins below
+// Outputs:  Standard ESC PWM (1100–1900µs) on pins below
 // ================================================================
 
 #include <ESP32Servo.h>
