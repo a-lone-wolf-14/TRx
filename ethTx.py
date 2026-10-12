@@ -18,4 +18,8 @@ try:
 except KeyboardInterrupt:
     print("\nStopped\n")
 finally:
+<<<<<<< HEAD
     sock.close()
+=======
+    sock.close()
+>>>>>>> origin/main

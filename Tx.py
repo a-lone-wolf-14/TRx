@@ -50,11 +50,10 @@ try:
         #firstly run the controller_debug.py to check the index number of each axis (lx,ly,rx,ry) and button (LB,RB) and then map them accordingly in the code below. 
         #Index number varies based on the controller model, driver and OS. The windows one with a standard XBOX controller has a format of (lx,ly,rx,ry,LT,RT). The linux one has a format of (lx,ly,rx,ry,LT,RT).
         axis_ly = apply_deadzone(joystick.get_axis(1)) #ly joystick (up-down):(fwd-back)
-        axis_lx = apply_deadzone(joystick.get_axis(0)) #lx joystick led
+        axis_lx = apply_deadzone(joystick.get_axis(0)) #lx joystick (left-right):(sway::left-right)
         axis_heave_down = apply_deadzone(joystick.get_axis(4))
         axis_heave_up = apply_deadzone(joystick.get_axis(5))
-        axis_rx = apply_deadzone(joystick.get_axis(2))
-        
+        axis_rx = apply_deadzone(joystick.get_axis(2)) #rx joystick (left-right):(Yaw::left-right)
 
         #cmd order : "<surge,sway,heave,yaw>"
         cmd = [-(axis_ly**3)*SURGE_SCALE , (axis_lx**3)*SWAY_SCALE , -((axis_heave_down-axis_heave_up)**3)*HEAVE_SCALE , (axis_rx**3)*YAW_SCALE ]
