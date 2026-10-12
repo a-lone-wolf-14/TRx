@@ -7,19 +7,19 @@
 #include <ESP32Servo.h>
 
 // --- Pin assignments (change to match your wiring) ---
-// T1–T4: Horizontal (FL, FR, BL, BR)
-// T5–T8: Vertical Heave (HFL, HFR, HBL, HBR)
+// T1–T4: Vertical Heave(FR, FL, BR, BL)
+// T5–T8: Horizontal(HFR, HFL, HBR, HBL)
 const int ESC_PINS[8] = {13, 12, 14, 27, 26, 25, 33, 32};
 
 /*
-13 - FL
-12 - FR
-14 - BL
-27 - BR
-26 - HFL
-25 - HFR
-33 - HBL
-32 - HBR
+13 - HFR
+12 - HFL
+14 - HBR
+27 - HBL
+26 - FR
+25 - FL
+33 - BR
+32 - BL
 */
 
 // --- PWM limits ---
